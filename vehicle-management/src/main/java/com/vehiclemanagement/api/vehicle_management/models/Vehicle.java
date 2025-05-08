@@ -1,5 +1,7 @@
 package com.vehiclemanagement.api.vehicle_management.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +26,6 @@ public class Vehicle {
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
+    @JsonBackReference
     private Brand brand;
 }

@@ -48,7 +48,7 @@ public class BrandService {
     }
 
     public List<Brand> getByName(String name) {
-        return brandRepository.findBrandsByName(name);
+        return brandRepository.findBrandsByNameContainingIgnoreCase(name);
     }
 
     public List<Brand> getByType(String type) {

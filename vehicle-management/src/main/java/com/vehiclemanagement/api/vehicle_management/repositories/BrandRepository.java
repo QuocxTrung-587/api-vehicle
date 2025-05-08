@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
 
-    List<Brand> findBrandsByName(String name);
+    List<Brand> findBrandsByNameContainingIgnoreCase(String name);
 
     List<Brand> findBrandsByType(Brand.BrandType type);
 }
