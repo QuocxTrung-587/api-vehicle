@@ -30,7 +30,7 @@ public class Brand {
     }
 
 //    @JsonIgnoreProperties("brand")
-    @OneToMany(mappedBy = "brand")
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Vehicle> vehicles;
 }
