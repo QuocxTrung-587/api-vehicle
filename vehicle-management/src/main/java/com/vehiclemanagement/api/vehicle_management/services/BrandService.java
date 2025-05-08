@@ -3,18 +3,14 @@ package com.vehiclemanagement.api.vehicle_management.services;
 import com.vehiclemanagement.api.vehicle_management.exception.ResourceNotFoundException;
 import com.vehiclemanagement.api.vehicle_management.models.Brand;
 import com.vehiclemanagement.api.vehicle_management.repositories.BrandRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class BrandService {
     private BrandRepository brandRepository;
 
-    @Autowired
     public BrandService(BrandRepository brandRepository) {
         this.brandRepository = brandRepository;
     }
@@ -52,10 +48,10 @@ public class BrandService {
     }
 
     public List<Brand> getByName(String name) {
-        return brandRepository.findByName(name);
+        return brandRepository.findBrandsByName(name);
     }
 
     public List<Brand> getByType(String type) {
-        return brandRepository.findByType(Brand.BrandType.valueOf(type));
+        return brandRepository.findBrandsByType(Brand.BrandType.valueOf(type));
     }
 }

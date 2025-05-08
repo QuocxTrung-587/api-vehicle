@@ -1,9 +1,12 @@
 package com.vehiclemanagement.api.vehicle_management.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @Entity
@@ -23,4 +26,8 @@ public class Brand {
     public enum BrandType {
         CAR,TRUCK,BUS
     }
+
+    @OneToMany(mappedBy = "brand")
+    @JsonIgnoreProperties("brand")
+    private List<Vehicle> vehicles;
 }

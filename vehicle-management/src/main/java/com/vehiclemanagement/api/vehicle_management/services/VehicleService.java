@@ -5,21 +5,17 @@ import com.vehiclemanagement.api.vehicle_management.models.Brand;
 import com.vehiclemanagement.api.vehicle_management.models.Vehicle;
 import com.vehiclemanagement.api.vehicle_management.repositories.BrandRepository;
 import com.vehiclemanagement.api.vehicle_management.repositories.VehicleRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class VehicleService {
     private VehicleRepository vehicleRepository;
 
     private BrandRepository brandRepository;
 
-    @Autowired
     public VehicleService(VehicleRepository vehicleRepository, BrandRepository brandRepository) {
         this.vehicleRepository = vehicleRepository;
         this.brandRepository = brandRepository;
@@ -54,6 +50,10 @@ public class VehicleService {
     public Vehicle update(Long id, Vehicle vehicle) {
         if (checkExists(id)) {
             vehicle.setId(id);
+            if (vehicle.getCreatedAt() == null) {
+                vehicle.setCreatedAt(getVehicleById(id).getCreatedAt());
+            }
+            brandRepository.findById(vehicle.getBrand().getId()).orElseThrow(() -> new ResourceNotFoundException("Brand not found with id" + vehicle.getBrand().getId()));
             return vehicleRepository.save(vehicle);
         }
         throw new ResourceNotFoundException("Vehicle not found with id" + id);

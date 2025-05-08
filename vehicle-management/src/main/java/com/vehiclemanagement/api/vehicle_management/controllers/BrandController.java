@@ -2,7 +2,6 @@ package com.vehiclemanagement.api.vehicle_management.controllers;
 
 import com.vehiclemanagement.api.vehicle_management.models.Brand;
 import com.vehiclemanagement.api.vehicle_management.services.BrandService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +10,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/brand")
 public class BrandController {
-    BrandService brandService = new BrandService();
+    BrandService brandService;
 
-    @Autowired
     public BrandController(BrandService brandService) {
         this.brandService = brandService;
     }

@@ -4,9 +4,11 @@ import com.vehiclemanagement.api.vehicle_management.models.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     @Query("SELECT v FROM Vehicle v WHERE " +
             "(:brandName IS NULL OR v.brand.name = :brandName) AND " +
@@ -24,4 +26,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             "   OR " +
             "   (v.price <= 10000000 AND v.brand.type = com.vehiclemanagement.api.vehicle_management.models.Brand.BrandType.BUS)")
     List<Vehicle> filterByPriceAndBrand();
+
+
 }
