@@ -1,53 +1,99 @@
 package com.vehiclemanagement.api.vehicle_management.controllers;
 
 import com.vehiclemanagement.api.vehicle_management.models.Brand;
-import com.vehiclemanagement.api.vehicle_management.services.BrandService;
+import com.vehiclemanagement.api.vehicle_management.models.BrandDTO;
+import com.vehiclemanagement.api.vehicle_management.services.BrandServiceImpl;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/brand")
 public class BrandController {
-    BrandService brandService;
+    BrandServiceImpl brandServiceImpl;
+    public static final int DEFAULT_PAGE_SIZE = 10;
 
-    public BrandController(BrandService brandService) {
-        this.brandService = brandService;
+    public BrandController(BrandServiceImpl brandServiceImpl) {
+        this.brandServiceImpl = brandServiceImpl;
     }
 
+//    @GetMapping
+//    public ResponseEntity<List<BrandDTO>> getAll() {
+//        List<Brand> brands = brandServiceImpl.getAll();
+//        List<BrandDTO> responses = brands.stream()
+//                .map(BrandDTO::new)
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(responses);
+//    }
+
     @GetMapping
-    public ResponseEntity<List<Brand>> getAll() {
-        return ResponseEntity.ok(brandService.getAll());
+    public ResponseEntity<Page<BrandDTO>> getAll(@RequestParam int page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        Page<Brand> brands = brandServiceImpl.getAll(pageable);
+        Page<BrandDTO> responses = brands.map(BrandDTO::new);
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Brand> getBrandById(@PathVariable Long id) {
-        return ResponseEntity.ok(brandService.getBrandById(id));
+    public ResponseEntity<BrandDTO> getBrandById(@PathVariable Long id) {
+        Brand brand = brandServiceImpl.getBrandByIdAndActiveTrue(id);
+        return ResponseEntity.ok(new BrandDTO(brand));
     }
 
     @PostMapping
-    public ResponseEntity<Brand> create(@RequestBody Brand brand) {
-        return ResponseEntity.ok(brandService.create(brand));
+    public ResponseEntity<BrandDTO> create(@Valid @RequestBody BrandDTO brandDTO) {
+        Brand brand = brandDTO.toBrand();
+        Brand created = brandServiceImpl.create(brand);
+        return ResponseEntity.ok(new BrandDTO(created));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Brand> update(@PathVariable Long id, @RequestBody Brand brand) {
-        return ResponseEntity.ok(brandService.update(id, brand));
+    public ResponseEntity<BrandDTO> update(@PathVariable Long id, @Valid @RequestBody BrandDTO brandDTO) {
+        Brand brand = brandDTO.toBrand();
+        Brand updated = brandServiceImpl.update(id, brand);
+        return ResponseEntity.ok(new BrandDTO(updated));
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        brandService.delete(id);
+        brandServiceImpl.delete(id);
     }
+
+//    @GetMapping("/name/{name}")
+//    public ResponseEntity<List<BrandDTO>> getByName(@PathVariable String name) {
+//        List<Brand> brands = brandServiceImpl.getByName(name);
+//        List<BrandDTO> responses = brands.stream()
+//                .map(BrandDTO::new)
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(responses);
+//    }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<List<Brand>> getByName(@PathVariable String name) {
-        return ResponseEntity.ok(brandService.getByName(name));
+    public ResponseEntity<Page<BrandDTO>> getByName(@PathVariable String name, @RequestParam int page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        Page<Brand> brands = brandServiceImpl.getByName(name, pageable);
+        Page<BrandDTO> responses = brands.map(BrandDTO::new);
+        return ResponseEntity.ok(responses);
     }
 
+//    @GetMapping("/type/{type}")
+//    public ResponseEntity<List<BrandDTO>> getByType(@PathVariable String type) {
+//        List<Brand> brands = brandServiceImpl.getByType(type);
+//        List<BrandDTO> responses = brands.stream()
+//                .map(BrandDTO::new)
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(responses);
+//    }
+
     @GetMapping("/type/{type}")
-    public ResponseEntity<List<Brand>> getByType(@PathVariable String type) {
-        return ResponseEntity.ok(brandService.getByType(type));
+    public ResponseEntity<Page<BrandDTO>> getByType(@PathVariable String type, @RequestParam int page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        Page<Brand> brands = brandServiceImpl.getByType(type, pageable);
+        Page<BrandDTO> responses = brands.map(BrandDTO::new);
+        return ResponseEntity.ok(responses);
     }
 }

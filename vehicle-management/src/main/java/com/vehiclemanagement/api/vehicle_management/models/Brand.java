@@ -1,6 +1,5 @@
 package com.vehiclemanagement.api.vehicle_management.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -25,12 +24,14 @@ public class Brand {
     @Enumerated(EnumType.STRING)
     private BrandType type;
 
+    private boolean active = true;
+
     public enum BrandType {
         CAR,TRUCK,BUS
     }
 
 //    @JsonIgnoreProperties("brand")
-    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "brand")
     @JsonManagedReference
     private List<Vehicle> vehicles;
 }

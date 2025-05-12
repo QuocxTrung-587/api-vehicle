@@ -1,53 +1,127 @@
 package com.vehiclemanagement.api.vehicle_management.controllers;
 
+import com.vehiclemanagement.api.vehicle_management.models.SearchRequest;
 import com.vehiclemanagement.api.vehicle_management.models.Vehicle;
-import com.vehiclemanagement.api.vehicle_management.services.VehicleService;
+import com.vehiclemanagement.api.vehicle_management.models.VehicleDTO;
+import com.vehiclemanagement.api.vehicle_management.services.VehicleServiceImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/vehicle")
 public class VehicleController {
-    private VehicleService vehicleService;
+    private VehicleServiceImpl vehicleServiceImpl;
+    public static final int DEFAULT_PAGE_SIZE = 10;
 
-    public VehicleController(VehicleService vehicleService) {
-        this.vehicleService = vehicleService;
+    public VehicleController(VehicleServiceImpl vehicleServiceImpl) {
+        this.vehicleServiceImpl = vehicleServiceImpl;
     }
 
+//    @GetMapping
+//    public ResponseEntity<List<VehicleDTO>> getAll() {
+//        List<Vehicle> vehicles = vehicleServiceImpl.getAll();
+//        List<VehicleDTO> response = vehicles.stream()
+//                .map(VehicleDTO::new)
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(response);
+//    }
+
     @GetMapping
-    public ResponseEntity<List<Vehicle>> getAll() {
-        return ResponseEntity.ok(vehicleService.getAll());
+    public ResponseEntity<Page<VehicleDTO>> getAll(@RequestParam int page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        Page<Vehicle> vehicles = vehicleServiceImpl.getAll(pageable);
+        Page<VehicleDTO> response = vehicles.map(VehicleDTO::new);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Vehicle> getVehicleById(@PathVariable Long id) {
-        return ResponseEntity.ok(vehicleService.getVehicleById(id));
+    public ResponseEntity<VehicleDTO> getVehicleById(@PathVariable Long id) {
+        Vehicle vehicle = vehicleServiceImpl.getVehicleById(id);
+        return ResponseEntity.ok(new VehicleDTO(vehicle));
     }
 
     @PostMapping
-    public ResponseEntity<Vehicle> create(@RequestBody Vehicle vehicle) {
-        return ResponseEntity.ok(vehicleService.create(vehicle));
+    public ResponseEntity<VehicleDTO> create(@RequestBody VehicleDTO vehicleDTO) {
+        Vehicle vehicle = vehicleDTO.toVehicle();
+        Vehicle res = vehicleServiceImpl.create(vehicle);
+        return ResponseEntity.ok(new VehicleDTO(res));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Vehicle> update(@PathVariable Long id, @RequestBody Vehicle vehicle) {
-        return ResponseEntity.ok(vehicleService.update(id, vehicle));
+    public ResponseEntity<VehicleDTO> update(@PathVariable Long id, @RequestBody VehicleDTO vehicleDTO) {
+        Vehicle vehicle = vehicleDTO.toVehicle();
+        Vehicle updated = vehicleServiceImpl.update(id, vehicle);
+        return ResponseEntity.ok(new VehicleDTO(updated));
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        vehicleService.delete(id);
+        vehicleServiceImpl.delete(id);
     }
+
+//    @GetMapping("/search")
+//    public ResponseEntity<List<VehicleDTO>> search(@RequestParam(required = false) String brand, @RequestParam(required = false) Integer year, @RequestParam(required = false) Long price, @RequestParam(required = false) String owner) {
+//        List<Vehicle> vehicles = vehicleServiceImpl.search(brand, year, price, owner);
+//        List<VehicleDTO> response = vehicles.stream()
+//                .map(VehicleDTO::new)
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(response);
+//    }
+
+//    @GetMapping("/search")
+//    public ResponseEntity<Page<VehicleDTO>> search(
+//            @RequestParam(required = false) String brand,
+//            @RequestParam(required = false) Integer year,
+//            @RequestParam(required = false) Long price,
+//            @RequestParam(required = false) String owner,
+//            Pageable pageable) {
+//        Page<Vehicle> vehicles = vehicleServiceImpl.search(brand, year, price, owner, pageable);
+//        Page<VehicleDTO> response = vehicles.map(VehicleDTO::new);
+//        return ResponseEntity.ok(response);
+//    }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Vehicle>> search(@RequestParam(required = false) String brand, @RequestParam(required = false) Integer year, @RequestParam(required = false) Long price, @RequestParam(required = false) String owner) {
-        return ResponseEntity.ok(vehicleService.search(brand, year, price, owner));
+    public ResponseEntity<Page<VehicleDTO>> search(
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Long price,
+            @RequestParam(required = false) String owner,
+            @RequestParam int page) {
+        SearchRequest searchRequest = new SearchRequest(brand, year, price, owner);
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        Page<Vehicle> vehicles = vehicleServiceImpl.search(searchRequest, pageable);
+        Page<VehicleDTO> response = vehicles.map(VehicleDTO::new);
+        return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/search")
+    public ResponseEntity<Page<VehicleDTO>> search(
+            @RequestBody SearchRequest searchRequest,
+            @RequestParam int page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        Page<Vehicle> vehicles = vehicleServiceImpl.search(searchRequest, pageable);
+        Page<VehicleDTO> response = vehicles.map(VehicleDTO::new);
+        return ResponseEntity.ok(response);
+    }
+
+//    @GetMapping("/filter")
+//    public ResponseEntity<List<VehicleDTO>> filter() {
+//        List<Vehicle> vehicles = vehicleServiceImpl.filter();
+//        List<VehicleDTO> response = vehicles.stream()
+//                .map(VehicleDTO::new)
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(response);
+//    }
+
     @GetMapping("/filter")
-    public ResponseEntity<List<Vehicle>> filter() {
-        return ResponseEntity.ok(vehicleService.filter());
+    public ResponseEntity<Page<VehicleDTO>> filter(@RequestParam int page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        Page<Vehicle> vehicles = vehicleServiceImpl.filter(pageable);
+        Page<VehicleDTO> response = vehicles.map(VehicleDTO::new);
+        return ResponseEntity.ok(response);
     }
 }
