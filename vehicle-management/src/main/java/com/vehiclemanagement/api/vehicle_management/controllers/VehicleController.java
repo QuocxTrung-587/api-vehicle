@@ -46,15 +46,13 @@ public class VehicleController {
 
     @PostMapping
     public ResponseEntity<VehicleDTO> create(@RequestBody VehicleDTO vehicleDTO) {
-        Vehicle vehicle = vehicleDTO.toVehicle();
-        Vehicle res = vehicleServiceImpl.create(vehicle);
+        Vehicle res = vehicleServiceImpl.create(vehicleDTO.toVehicle());
         return ResponseEntity.ok(new VehicleDTO(res));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<VehicleDTO> update(@PathVariable Long id, @RequestBody VehicleDTO vehicleDTO) {
-        Vehicle vehicle = vehicleDTO.toVehicle();
-        Vehicle updated = vehicleServiceImpl.update(id, vehicle);
+        Vehicle updated = vehicleServiceImpl.update(id, vehicleDTO.toVehicle());
         return ResponseEntity.ok(new VehicleDTO(updated));
     }
 

@@ -46,15 +46,13 @@ public class BrandController {
 
     @PostMapping
     public ResponseEntity<BrandDTO> create(@Valid @RequestBody BrandDTO brandDTO) {
-        Brand brand = brandDTO.toBrand();
-        Brand created = brandServiceImpl.create(brand);
+        Brand created = brandServiceImpl.create(brandDTO.toBrand());
         return ResponseEntity.ok(new BrandDTO(created));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BrandDTO> update(@PathVariable Long id, @Valid @RequestBody BrandDTO brandDTO) {
-        Brand brand = brandDTO.toBrand();
-        Brand updated = brandServiceImpl.update(id, brand);
+        Brand updated = brandServiceImpl.update(id, brandDTO.toBrand());
         return ResponseEntity.ok(new BrandDTO(updated));
     }
 
