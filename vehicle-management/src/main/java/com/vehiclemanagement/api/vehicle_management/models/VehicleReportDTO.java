@@ -22,7 +22,6 @@ public class VehicleReportDTO {
         this.id = vehicle.getId();
         this.name = vehicle.getName();
         this.year = vehicle.getYear();
-        // Convert Long to BigDecimal
         this.price = vehicle.getPrice() != null ? new BigDecimal(vehicle.getPrice()) : null;
         this.owner = vehicle.getOwner();
         

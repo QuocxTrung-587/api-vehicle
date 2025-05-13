@@ -36,11 +36,11 @@ public class ReportController {
         try {
             List<?> data;
             Map<String, Object> parameters = new HashMap<>();
-            
+
             if (reportName.equals("vehicle")) {
                 Pageable pageable = PageRequest.of(0, 100); // Adjust page size as needed
                 Page<VehicleDTO> vehiclePage = vehicleService.getAll(pageable);
-                
+
 //                data = vehiclePage.getContent().stream()
 //                    .collect(Collectors.toList());
 
@@ -59,12 +59,14 @@ public class ReportController {
             } else if (reportName.equals("vehicledetail") && id != null) {
                 VehicleDTO vehicle = vehicleService.getVehicleById(id);
                 VehicleReportDTO vehicleReport = new VehicleReportDTO(vehicle.toVehicle());
+                vehicleReport.setBrandName(vehicle.getBrand().getName());
+                vehicleReport.setBrandType(vehicle.getBrand().getType().name());
                 data = List.of(vehicleReport);
                 parameters.put("VEHICLE_ID", id);
             } else {
                 data = List.of();
             }
-            
+
 
             byte[] reportBytes = reportService.generateReport(reportName, data, parameters);
 
@@ -80,4 +82,5 @@ public class ReportController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
 }
