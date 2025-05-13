@@ -48,6 +48,7 @@ public class VehicleDTO {
         vehicle.setYear(year);
         vehicle.setPrice(price);
         vehicle.setOwner(owner);
+        vehicle.setCreatedAt(createdAt);
 
         if (brandId == null && brand != null && brand.getId() > 0) {
             brandId = brand.getId();
@@ -61,6 +62,31 @@ public class VehicleDTO {
 
         return vehicle;
     }
+
+//    public Vehicle toVehicle(Instant createdAtDefault) {
+//        Vehicle vehicle = new Vehicle();
+//        if (id != null) {
+//            vehicle.setId(id);
+//        }
+//        vehicle.setName(name);
+//        vehicle.setYear(year);
+//        vehicle.setPrice(price);
+//        vehicle.setOwner(owner);
+//        vehicle.setCreatedAt(createdAt != null ? createdAt : createdAtDefault); // ✅ Gán createdAt mặc định nếu không có
+//
+//        if (brandId == null && brand != null && brand.getId() > 0) {
+//            brandId = brand.getId();
+//        }
+//
+//        if (brandId != null) {
+//            Brand brandRef = new Brand();
+//            brandRef.setId(brandId);
+//            vehicle.setBrand(brandRef);
+//        }
+//
+//        return vehicle;
+//    }
+
 
     @Data
     @NoArgsConstructor

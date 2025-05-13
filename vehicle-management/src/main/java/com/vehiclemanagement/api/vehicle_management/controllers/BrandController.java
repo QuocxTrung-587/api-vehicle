@@ -1,6 +1,5 @@
 package com.vehiclemanagement.api.vehicle_management.controllers;
 
-import com.vehiclemanagement.api.vehicle_management.models.Brand;
 import com.vehiclemanagement.api.vehicle_management.models.BrandDTO;
 import com.vehiclemanagement.api.vehicle_management.services.BrandServiceImpl;
 import jakarta.validation.Valid;

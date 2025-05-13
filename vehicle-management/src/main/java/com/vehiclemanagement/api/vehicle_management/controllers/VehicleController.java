@@ -1,7 +1,6 @@
 package com.vehiclemanagement.api.vehicle_management.controllers;
 
 import com.vehiclemanagement.api.vehicle_management.models.SearchRequest;
-import com.vehiclemanagement.api.vehicle_management.models.Vehicle;
 import com.vehiclemanagement.api.vehicle_management.models.VehicleDTO;
 import com.vehiclemanagement.api.vehicle_management.services.VehicleServiceImpl;
 import org.springframework.data.domain.Page;

@@ -1,6 +1,5 @@
 package com.vehiclemanagement.api.vehicle_management.controllers;
 
-import com.vehiclemanagement.api.vehicle_management.models.Vehicle;
 import com.vehiclemanagement.api.vehicle_management.models.VehicleDTO;
 import com.vehiclemanagement.api.vehicle_management.models.VehicleReportDTO;
 import com.vehiclemanagement.api.vehicle_management.services.ReportServiceImpl;
@@ -59,14 +58,14 @@ public class ReportController {
                         .collect(Collectors.toList());
             } else if (reportName.equals("vehicledetail") && id != null) {
                 VehicleDTO vehicle = vehicleService.getVehicleById(id);
-                data = List.of(vehicle);
+                VehicleReportDTO vehicleReport = new VehicleReportDTO(vehicle.toVehicle());
+                data = List.of(vehicleReport);
                 parameters.put("VEHICLE_ID", id);
             } else {
                 data = List.of();
             }
             
-            // Removed LOGO_PATH parameter
-            
+
             byte[] reportBytes = reportService.generateReport(reportName, data, parameters);
 
             HttpHeaders headers = new HttpHeaders();
