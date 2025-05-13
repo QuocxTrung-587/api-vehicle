@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- VEHICLE DETAILS REPORT -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="VehicleDetailsReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="12345678-1234-1234-1234-123456789012">
+
+    <!-- Parameters -->
+    <parameter name="FILTER_DATE_FROM" class="java.util.Date"/>
+    <parameter name="FILTER_DATE_TO" class="java.util.Date"/>
+    <parameter name="FILTER_BRAND_TYPE" class="java.lang.String"/>
+    <!-- Removed LOGO_PATH parameter -->
+
+    <!-- Fields for VehicleReportDTO -->
+    <field name="name" class="java.lang.String"/>
+    <field name="year" class="java.lang.Integer"/>
+    <field name="price" class="java.math.BigDecimal"/>
+    <field name="owner" class="java.lang.String"/>
+    <field name="brandName" class="java.lang.String"/>
+    <field name="brandType" class="java.lang.String"/>
+
+    <!-- Title -->
+    <title>
+        <band height="80">
+            <!-- Removed image element -->
+            <textField>
+                <reportElement x="0" y="10" width="555" height="30"/>
+                <textElement textAlignment="Center">
+                    <font size="16" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Vehicle Details Report"]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <!-- Detail -->
+    <detail>
+        <band height="20">
+            <textField><reportElement x="0" y="0" width="100" height="20"/><textFieldExpression><![CDATA[$F{name}]]></textFieldExpression></textField>
+            <textField><reportElement x="100" y="0" width="50" height="20"/><textFieldExpression><![CDATA[$F{year}]]></textFieldExpression></textField>
+            <textField><reportElement x="150" y="0" width="80" height="20"/><textFieldExpression><![CDATA[$F{price}]]></textFieldExpression></textField>
+            <textField><reportElement x="230" y="0" width="120" height="20"/><textFieldExpression><![CDATA[$F{owner}]]></textFieldExpression></textField>
+            <textField><reportElement x="350" y="0" width="100" height="20"/><textFieldExpression><![CDATA[$F{brandName}]]></textFieldExpression></textField>
+            <textField><reportElement x="450" y="0" width="100" height="20"/><textFieldExpression><![CDATA[$F{brandType}]]></textFieldExpression></textField>
+        </band>
+    </detail>
+
+    <!--  Page Footer -->
+    <pageFooter>
+        <band height="20">
+            <textField>
+                <reportElement x="480" y="0" width="75" height="20"/>
+                <textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+</jasperReport>
+

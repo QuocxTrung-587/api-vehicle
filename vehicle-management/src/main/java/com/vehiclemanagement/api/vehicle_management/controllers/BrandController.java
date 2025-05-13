@@ -33,27 +33,26 @@ public class BrandController {
     @GetMapping
     public ResponseEntity<Page<BrandDTO>> getAll(@RequestParam int page) {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
-        Page<Brand> brands = brandServiceImpl.getAll(pageable);
-        Page<BrandDTO> responses = brands.map(BrandDTO::new);
-        return ResponseEntity.ok(responses);
+        Page<BrandDTO> brands = brandServiceImpl.getAll(pageable);
+        return ResponseEntity.ok(brands);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BrandDTO> getBrandById(@PathVariable Long id) {
-        Brand brand = brandServiceImpl.getBrandByIdAndActiveTrue(id);
-        return ResponseEntity.ok(new BrandDTO(brand));
+        BrandDTO brand = brandServiceImpl.getBrandByIdAndActiveTrue(id);
+        return ResponseEntity.ok(brand);
     }
 
     @PostMapping
     public ResponseEntity<BrandDTO> create(@Valid @RequestBody BrandDTO brandDTO) {
-        Brand created = brandServiceImpl.create(brandDTO.toBrand());
-        return ResponseEntity.ok(new BrandDTO(created));
+        BrandDTO created = brandServiceImpl.create(brandDTO);
+        return ResponseEntity.ok(created);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BrandDTO> update(@PathVariable Long id, @Valid @RequestBody BrandDTO brandDTO) {
-        Brand updated = brandServiceImpl.update(id, brandDTO.toBrand());
-        return ResponseEntity.ok(new BrandDTO(updated));
+        BrandDTO updated = brandServiceImpl.update(id, brandDTO);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
@@ -73,9 +72,8 @@ public class BrandController {
     @GetMapping("/name/{name}")
     public ResponseEntity<Page<BrandDTO>> getByName(@PathVariable String name, @RequestParam int page) {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
-        Page<Brand> brands = brandServiceImpl.getByName(name, pageable);
-        Page<BrandDTO> responses = brands.map(BrandDTO::new);
-        return ResponseEntity.ok(responses);
+        Page<BrandDTO> brands = brandServiceImpl.getByName(name, pageable);
+        return ResponseEntity.ok(brands);
     }
 
 //    @GetMapping("/type/{type}")
@@ -90,8 +88,7 @@ public class BrandController {
     @GetMapping("/type/{type}")
     public ResponseEntity<Page<BrandDTO>> getByType(@PathVariable String type, @RequestParam int page) {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
-        Page<Brand> brands = brandServiceImpl.getByType(type, pageable);
-        Page<BrandDTO> responses = brands.map(BrandDTO::new);
-        return ResponseEntity.ok(responses);
+        Page<BrandDTO> brands = brandServiceImpl.getByType(type, pageable);
+        return ResponseEntity.ok(brands);
     }
 }

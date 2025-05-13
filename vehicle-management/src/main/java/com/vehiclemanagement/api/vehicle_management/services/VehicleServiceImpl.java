@@ -4,6 +4,7 @@ import com.vehiclemanagement.api.vehicle_management.exception.ResourceNotFoundEx
 import com.vehiclemanagement.api.vehicle_management.models.Brand;
 import com.vehiclemanagement.api.vehicle_management.models.SearchRequest;
 import com.vehiclemanagement.api.vehicle_management.models.Vehicle;
+import com.vehiclemanagement.api.vehicle_management.models.VehicleDTO;
 import com.vehiclemanagement.api.vehicle_management.repositories.BrandRepository;
 import com.vehiclemanagement.api.vehicle_management.repositories.VehicleRepository;
 import org.springframework.data.domain.Page;
@@ -23,15 +24,17 @@ public class VehicleServiceImpl implements VehicleService {
         this.brandRepository = brandRepository;
     }
 
-    public Page<Vehicle> getAll(Pageable pageable) {
-        return vehicleRepository.findAll(pageable);
+    public Page<VehicleDTO> getAll(Pageable pageable) {
+        Page<Vehicle> vehicles = vehicleRepository.findAll(pageable);
+        return vehicles.map(VehicleDTO::new);
     }
 
-    public Vehicle getVehicleById(Long id) {
-        return vehicleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found with id" + id));
+    public VehicleDTO getVehicleById(Long id) {
+        Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found with id" + id));
+        return new VehicleDTO(vehicle);
     }
 
-    public Vehicle create(Vehicle vehicle) {
+    public VehicleDTO create(VehicleDTO vehicle) {
         Brand brand = brandRepository.findById(vehicle.getBrand().getId()).orElseThrow(() -> new ResourceNotFoundException("Brand not found with id" + vehicle.getBrand().getId()));
 
         Vehicle res = new Vehicle();
@@ -42,35 +45,39 @@ public class VehicleServiceImpl implements VehicleService {
         res.setCreatedAt(Instant.now());
         res.setBrand(brand);
 
-        return vehicleRepository.save(res);
+        Vehicle res1 = vehicleRepository.save(res);
+        return new VehicleDTO(res1);
     }
 
     public boolean checkExists(Long id) {
         return vehicleRepository.existsById(id);
     }
 
-    public Vehicle update(Long id, Vehicle vehicle) {
+    public VehicleDTO update(Long id, VehicleDTO vehicle) {
         if (checkExists(id)) {
             vehicle.setId(id);
             if (vehicle.getCreatedAt() == null) {
                 vehicle.setCreatedAt(getVehicleById(id).getCreatedAt());
             }
             brandRepository.findById(vehicle.getBrand().getId()).orElseThrow(() -> new ResourceNotFoundException("Brand not found with id" + vehicle.getBrand().getId()));
-            return vehicleRepository.save(vehicle);
+            Vehicle res = vehicleRepository.save(vehicle.toVehicle());
+            return new VehicleDTO(res);
         }
         throw new ResourceNotFoundException("Vehicle not found with id" + id);
     }
 
     public void delete(Long id) {
-        Vehicle vehicle = getVehicleById(id);
-        vehicleRepository.delete(vehicle);
+        VehicleDTO vehicle = getVehicleById(id);
+        vehicleRepository.delete(vehicle.toVehicle());
     }
 
-    public Page<Vehicle> search(SearchRequest searchRequest, Pageable pageable) {
-        return vehicleRepository.search(searchRequest, pageable);
+    public Page<VehicleDTO> search(SearchRequest searchRequest, Pageable pageable) {
+        Page<Vehicle> vehicles = vehicleRepository.search(searchRequest, pageable);
+        return vehicles.map(VehicleDTO::new);
     }
 
-    public Page<Vehicle> filter(Pageable pageable) {
-        return vehicleRepository.filterByPriceAndBrand(pageable);
+    public Page<VehicleDTO> filter(Pageable pageable) {
+        Page<Vehicle> vehicles = vehicleRepository.filterByPriceAndBrand(pageable);
+        return vehicles.map(VehicleDTO::new);
     }
 }

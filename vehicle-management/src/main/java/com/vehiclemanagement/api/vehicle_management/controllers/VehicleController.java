@@ -33,27 +33,26 @@ public class VehicleController {
     @GetMapping
     public ResponseEntity<Page<VehicleDTO>> getAll(@RequestParam int page) {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
-        Page<Vehicle> vehicles = vehicleServiceImpl.getAll(pageable);
-        Page<VehicleDTO> response = vehicles.map(VehicleDTO::new);
-        return ResponseEntity.ok(response);
+        Page<VehicleDTO> vehicles = vehicleServiceImpl.getAll(pageable);
+        return ResponseEntity.ok(vehicles);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<VehicleDTO> getVehicleById(@PathVariable Long id) {
-        Vehicle vehicle = vehicleServiceImpl.getVehicleById(id);
-        return ResponseEntity.ok(new VehicleDTO(vehicle));
+        VehicleDTO vehicle = vehicleServiceImpl.getVehicleById(id);
+        return ResponseEntity.ok(vehicle);
     }
 
     @PostMapping
     public ResponseEntity<VehicleDTO> create(@RequestBody VehicleDTO vehicleDTO) {
-        Vehicle res = vehicleServiceImpl.create(vehicleDTO.toVehicle());
-        return ResponseEntity.ok(new VehicleDTO(res));
+        VehicleDTO res = vehicleServiceImpl.create(vehicleDTO);
+        return ResponseEntity.ok(res);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<VehicleDTO> update(@PathVariable Long id, @RequestBody VehicleDTO vehicleDTO) {
-        Vehicle updated = vehicleServiceImpl.update(id, vehicleDTO.toVehicle());
-        return ResponseEntity.ok(new VehicleDTO(updated));
+        VehicleDTO updated = vehicleServiceImpl.update(id, vehicleDTO);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
@@ -91,9 +90,8 @@ public class VehicleController {
             @RequestParam int page) {
         SearchRequest searchRequest = new SearchRequest(brand, year, price, owner);
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
-        Page<Vehicle> vehicles = vehicleServiceImpl.search(searchRequest, pageable);
-        Page<VehicleDTO> response = vehicles.map(VehicleDTO::new);
-        return ResponseEntity.ok(response);
+        Page<VehicleDTO> vehicles = vehicleServiceImpl.search(searchRequest, pageable);
+        return ResponseEntity.ok(vehicles);
     }
 
     @PostMapping("/search")
@@ -101,9 +99,8 @@ public class VehicleController {
             @RequestBody SearchRequest searchRequest,
             @RequestParam int page) {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
-        Page<Vehicle> vehicles = vehicleServiceImpl.search(searchRequest, pageable);
-        Page<VehicleDTO> response = vehicles.map(VehicleDTO::new);
-        return ResponseEntity.ok(response);
+        Page<VehicleDTO> vehicles = vehicleServiceImpl.search(searchRequest, pageable);
+        return ResponseEntity.ok(vehicles);
     }
 
 //    @GetMapping("/filter")
@@ -118,8 +115,7 @@ public class VehicleController {
     @GetMapping("/filter")
     public ResponseEntity<Page<VehicleDTO>> filter(@RequestParam int page) {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
-        Page<Vehicle> vehicles = vehicleServiceImpl.filter(pageable);
-        Page<VehicleDTO> response = vehicles.map(VehicleDTO::new);
-        return ResponseEntity.ok(response);
+        Page<VehicleDTO> vehicles = vehicleServiceImpl.filter(pageable);
+        return ResponseEntity.ok(vehicles);
     }
 }

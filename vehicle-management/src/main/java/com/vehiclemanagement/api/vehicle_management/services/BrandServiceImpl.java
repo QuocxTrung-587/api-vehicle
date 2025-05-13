@@ -2,6 +2,7 @@ package com.vehiclemanagement.api.vehicle_management.services;
 
 import com.vehiclemanagement.api.vehicle_management.exception.ResourceNotFoundException;
 import com.vehiclemanagement.api.vehicle_management.models.Brand;
+import com.vehiclemanagement.api.vehicle_management.models.BrandDTO;
 import com.vehiclemanagement.api.vehicle_management.repositories.BrandRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,47 +17,54 @@ public class BrandServiceImpl implements BrandService {
         this.brandRepository = brandRepository;
     }
 
-    public Brand create(Brand brand) {
-        return brandRepository.save(brand);
+    public BrandDTO create(BrandDTO brand) {
+        Brand res = brandRepository.save(brand.toBrand());
+        return new BrandDTO(res);
     }
 
-    public Page<Brand> getAll(Pageable pageable) {
-        return brandRepository.findByActiveTrue(pageable);
+    public Page<BrandDTO> getAll(Pageable pageable) {
+        Page<Brand> brands = brandRepository.findByActiveTrue(pageable);
+        return brands.map(BrandDTO::new);
     }
 
-    public Brand getBrandById(Long id) {
+    public BrandDTO getBrandById(Long id) {
 
-        return brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Brand not found with id" + id));
+        Brand brand =  brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Brand not found with id" + id));
+        return new BrandDTO(brand);
     }
 
-    public Brand getBrandByIdAndActiveTrue(Long id) {
-        return brandRepository.findByIdAndActiveTrue(id);
+    public BrandDTO getBrandByIdAndActiveTrue(Long id) {
+        Brand brand = brandRepository.findByIdAndActiveTrue(id);
+        return new BrandDTO(brand);
     }
 
-    public Brand update(Long id, Brand brand) {
-        Brand res = getBrandById(id);
+    public BrandDTO update(Long id, BrandDTO brand) {
+        BrandDTO res = getBrandById(id);
         if (res == null) {
             return null;
         }
         res .setName(brand.getName());
         res.setType(brand.getType());
         res.setActive(brand.isActive());
-        return brandRepository.save(res);
+        Brand updated = brandRepository.save(res.toBrand());
+        return new BrandDTO(updated);
     }
 
     public void delete(Long id) {
-        Brand res = getBrandById(id);
+        BrandDTO res = getBrandById(id);
 
         res.setActive(false);
-        brandRepository.save(res);
+        brandRepository.save(res.toBrand());
 //        brandRepository.delete(res);
     }
 
-    public Page<Brand> getByName(String name, Pageable pageable) {
-        return brandRepository.findBrandsByNameContainingIgnoreCaseAndActiveTrue(name, pageable);
+    public Page<BrandDTO> getByName(String name, Pageable pageable) {
+        Page<Brand> brands = brandRepository.findBrandsByNameContainingIgnoreCaseAndActiveTrue(name, pageable);
+        return brands.map(BrandDTO::new);
     }
 
-    public Page<Brand> getByType(String type, Pageable pageable) {
-        return brandRepository.findBrandsByTypeAndActiveTrue(Brand.BrandType.valueOf(type), pageable);
+    public Page<BrandDTO> getByType(String type, Pageable pageable) {
+        Page<Brand> brands = brandRepository.findBrandsByTypeAndActiveTrue(Brand.BrandType.valueOf(type), pageable);
+        return brands.map(BrandDTO::new);
     }
 }
