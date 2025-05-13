@@ -38,7 +38,7 @@ public class ReportController {
             Map<String, Object> parameters = new HashMap<>();
 
             if (reportName.equals("vehicle")) {
-                Pageable pageable = PageRequest.of(0, 100); // Adjust page size as needed
+                Pageable pageable = PageRequest.of(0, 100);
                 Page<VehicleDTO> vehiclePage = vehicleService.getAll(pageable);
 
 //                data = vehiclePage.getContent().stream()

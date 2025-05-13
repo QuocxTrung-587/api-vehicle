@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- VEHICLE DETAILS REPORT -->
+<!-- VEHICLE REPORT -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
@@ -9,7 +9,6 @@
     <parameter name="FILTER_DATE_FROM" class="java.util.Date"/>
     <parameter name="FILTER_DATE_TO" class="java.util.Date"/>
     <parameter name="FILTER_BRAND_TYPE" class="java.lang.String"/>
-    <!-- Removed LOGO_PATH parameter -->
 
     <!-- Fields for VehicleReportDTO -->
     <field name="name" class="java.lang.String"/>
@@ -22,7 +21,6 @@
     <!-- Title -->
     <title>
         <band height="80">
-            <!-- Removed image element -->
             <textField>
                 <reportElement x="0" y="10" width="555" height="30"/>
                 <textElement textAlignment="Center">
