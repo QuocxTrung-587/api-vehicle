@@ -63,17 +63,6 @@ public class VehicleServiceImpl implements VehicleService {
             Vehicle res = vehicleRepository.save(vehicle.toVehicle());
             return new VehicleDTO(res);
         }
-//        if (checkExists(id)) {
-//            vehicle.setId(id);
-//
-//            Instant originalCreatedAt = getVehicleById(id).getCreatedAt(); // ✅ Lấy createdAt cũ
-//
-//            brandRepository.findById(vehicle.getBrand().getId())
-//                    .orElseThrow(() -> new ResourceNotFoundException("Brand not found with id" + vehicle.getBrand().getId()));
-//
-//            Vehicle res = vehicleRepository.save(vehicle.toVehicle(originalCreatedAt)); // ✅ Dùng createdAt mặc định
-//            return new VehicleDTO(res);
-//        }
         throw new ResourceNotFoundException("Vehicle not found with id" + id);
     }
 

@@ -7,5 +7,5 @@ import java.util.Map;
 
 @Service
 public interface ReportService {
-    public byte[] generateReport(String reportName, List<?> data, Map<String, Object> parameters) throws Exception;
+    byte[] generateReport(String reportName, List<?> data, Map<String, Object> parameters) throws Exception;
 }
