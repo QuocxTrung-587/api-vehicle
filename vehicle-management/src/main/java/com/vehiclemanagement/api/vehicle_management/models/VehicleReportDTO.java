@@ -13,7 +13,7 @@ public class VehicleReportDTO {
     private Long id;
     private String name;
     private Integer year;
-    private BigDecimal price;
+    private Long price;
     private String owner;
     private String brandName;
     private String brandType;
@@ -22,7 +22,7 @@ public class VehicleReportDTO {
         this.id = vehicle.getId();
         this.name = vehicle.getName();
         this.year = vehicle.getYear();
-        this.price = vehicle.getPrice() != null ? new BigDecimal(vehicle.getPrice()) : null;
+        this.price = vehicle.getPrice();
         this.owner = vehicle.getOwner();
         
         if (vehicle.getBrand() != null) {

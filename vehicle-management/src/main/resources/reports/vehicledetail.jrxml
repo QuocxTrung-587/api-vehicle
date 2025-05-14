@@ -13,7 +13,7 @@
     <field name="id" class="java.lang.Long"/>
     <field name="name" class="java.lang.String"/>
     <field name="year" class="java.lang.Integer"/>
-    <field name="price" class="java.math.BigDecimal"/>
+    <field name="price" class="java.lang.Long"/>
     <field name="owner" class="java.lang.String"/>
     <field name="brandName" class="java.lang.String"/>
     <field name="brandType" class="java.lang.String"/>
@@ -22,7 +22,7 @@
     <variable name="VehicleCount" class="java.lang.Integer" calculation="Count">
         <variableExpression><![CDATA[$F{id}]]></variableExpression>
     </variable>
-    <variable name="AveragePrice" class="java.math.BigDecimal" calculation="Average">
+    <variable name="AveragePrice" class="java.lang.Long" calculation="Average">
         <variableExpression><![CDATA[$F{price}]]></variableExpression>
     </variable>
 

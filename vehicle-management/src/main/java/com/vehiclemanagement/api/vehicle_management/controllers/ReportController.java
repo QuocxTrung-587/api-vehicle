@@ -49,7 +49,7 @@ public class ReportController {
                             VehicleReportDTO r = new VehicleReportDTO();
                             r.setName(dto.getName());
                             r.setYear(dto.getYear());
-                            r.setPrice(BigDecimal.valueOf(dto.getPrice()));
+                            r.setPrice(dto.getPrice());
                             r.setOwner(dto.getOwner());
                             r.setBrandName(dto.getBrand().getName());
                             r.setBrandType(dto.getBrand().getType().name());

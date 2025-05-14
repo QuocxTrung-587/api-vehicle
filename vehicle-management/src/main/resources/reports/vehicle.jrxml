@@ -13,7 +13,7 @@
     <!-- Fields for VehicleReportDTO -->
     <field name="name" class="java.lang.String"/>
     <field name="year" class="java.lang.Integer"/>
-    <field name="price" class="java.math.BigDecimal"/>
+    <field name="price" class="java.lang.Long"/>
     <field name="owner" class="java.lang.String"/>
     <field name="brandName" class="java.lang.String"/>
     <field name="brandType" class="java.lang.String"/>
