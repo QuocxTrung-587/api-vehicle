@@ -6,13 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface VehicleRepository extends JpaRepository<Vehicle, Long>, PagingAndSortingRepository<Vehicle, Long> {
+public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 //    @Query("SELECT v FROM Vehicle v WHERE " +
 //            "(:brandName IS NULL OR v.brand.name = :brandName) AND " +
 //            "(:year IS NULL OR v.year = :year) AND " +
